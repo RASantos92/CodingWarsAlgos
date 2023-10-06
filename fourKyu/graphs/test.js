@@ -1,4 +1,4 @@
-const testArray = [0,0,0,0,0,0,0];
+const testArray = ["test"];
 
 
 const testMapReturn = testArray.map((e) => {
@@ -19,3 +19,7 @@ for(let i = 0; i<testArray2.length; i++){
 }
 console.log("goodbye")
 // console.log(testMapReturn);
+
+if(testArray.indexOf(3) < 0){
+    console.log("there are no threes")
+}

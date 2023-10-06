@@ -17,7 +17,6 @@ const buildProperChessBoard = () => {
     return output;
 }
 
-buildProperChessBoard()
 const knight = (start, finish) => {
     const chessBoard = buildProperChessBoard();
     const listOfPickedMoves = [];
@@ -51,14 +50,18 @@ const knight = (start, finish) => {
         }
         return output.filter((e) => e !== undefined);
     }
+    // while(initalPositionValue != finalPostitionValue){
+    const usedMoves = [];
     while(initalPositionValue != finalPostitionValue){
         const listOfMoves = listOfMovesKight(chessBoard, yInitalPosition, xInitalPosition);
-        console.log(listOfMoves);
+        // console.log(listOfMoves);
         let smallestDifference = Infinity;
         let smallestMove = "";
+        let backupMove = "";
         for(let i=0; i<listOfMoves.length; i++){
             if(listOfMoves[i] === finalPostitionValue){
                 listOfPickedMoves.push(listOfMoves[i]);
+                console.log("all picked moves", listOfPickedMoves)
                 return listOfPickedMoves.length;
             }
             const yValueOfMove = listOfMoves[i][1] -1;
@@ -67,18 +70,32 @@ const knight = (start, finish) => {
             let xDifference = xValueOfMove - xFinalPostion;
             yDifference = yDifference < 0 ? yDifference * -1 : yDifference;
             xDifference = xDifference < 0 ? xDifference * -1 : xDifference;
-            console.log("the difference", yDifference, xDifference)
             const totalDifference = yDifference + xDifference;
-            if(totalDifference < smallestDifference){
+            if(totalDifference < smallestDifference && usedMoves.indexOf(listOfMoves[i])< 0){
                 smallestDifference = totalDifference;
                 smallestMove = listOfMoves[i];
+                backupMove = listOfMoves[i];
             }
         }
-        console.log(smallestMove)
-        break
+
+        if(smallestMove === ""){
+            console.log("did i use a backup move?*****************************")
+            listOfPickedMoves.push(backupMove);
+            usedMoves.push(backupMove);
+            // console.log("backup move",backupMove);
+            xInitalPosition = alphaKeys[backupMove[0]];
+            yInitalPosition = backupMove[1] -1;
+        }else {
+            listOfPickedMoves.push(smallestMove);
+            usedMoves.push(smallestMove);
+            // console.log("smallest move",smallestMove);
+            xInitalPosition = alphaKeys[smallestMove[0]];
+            yInitalPosition = smallestMove[1] -1;
+        }
+        // console.log("used moves",usedMoves)
     }
     
 
 }
 
-console.log(knight("a1", "b5"))
+console.log(knight("a1", "e5"))
