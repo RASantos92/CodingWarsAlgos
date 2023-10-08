@@ -5,6 +5,8 @@
 //     for(var i = 0 ; i < x; i++) output[i] = row;
 // }
 
+// https://www.codewars.com/kata/549ee8b47111a81214000941/solutions
+
 const buildProperChessBoard = () => {
     const alpha = ["a","b","c","d","e","f","g","h"];
     const output = [];
@@ -25,7 +27,6 @@ const knight = (start, finish) => {
     const finalPostitionValue = chessBoard[finish[1]-1][alphaKeys[finish[0]]];
     let yInitalPosition = start[1]-1
     let xInitalPosition = alphaKeys[start[0]]
-
     let yFinalPostion = finish[1]-1
     let xFinalPostion = alphaKeys[finish[0]]
 
@@ -50,8 +51,9 @@ const knight = (start, finish) => {
         }
         return output.filter((e) => e !== undefined);
     }
-    // while(initalPositionValue != finalPostitionValue){
+
     const usedMoves = [];
+    
     while(initalPositionValue != finalPostitionValue){
         const listOfMoves = listOfMovesKight(chessBoard, yInitalPosition, xInitalPosition);
         // console.log(listOfMoves);
@@ -98,4 +100,4 @@ const knight = (start, finish) => {
 
 }
 
-console.log(knight("a1", "e5"))
+console.log(knight("a1", "c1"))
