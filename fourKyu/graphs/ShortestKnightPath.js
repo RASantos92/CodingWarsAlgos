@@ -100,4 +100,5 @@ const knight = (start, finish) => {
 
 }
 
+
 console.log(knight("a1", "c1"))
