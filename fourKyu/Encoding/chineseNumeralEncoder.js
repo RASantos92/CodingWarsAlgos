@@ -1,3 +1,5 @@
+//https://www.codewars.com/kata/52608f5345d4a19bed000b31/train/javascript
+
 const numerals = {
     "-":"负",
     ".":"点",
@@ -73,3 +75,22 @@ const chineseNumEncoder = (num) => {
 }
 
 console.log(chineseNumEncoder(123.45));
+
+
+
+// const POW = {0:'', 1:"十", 2:"百", 3:"千", 4:"万"};
+// const SYM = {"-":"负", ".":"点", 0:"零", 1:"一", 2:"二", 3:"三", 4:"四", 5:"五", 6:"六", 7:"七", 8:"八", 9:"九", 10:"十"};
+// for(let n=1;n<10;n++) SYM[n+10] = POW[1]+SYM[n];
+
+
+// function toChineseNumeral(n){
+//     let [i,r] = ( ''+Math.abs(n) ).split('.')
+//     return (n<0 ? SYM['-']:'') + parse(i) + decimals(r);
+// }
+
+// const decimals=r=> !r ? '' : SYM['.']+[...r].map(d=>SYM[d]).join('');
+
+// const parse=n=> SYM[n] || [...''+n].reverse()
+//                                    .map((d,i)=>SYM[d]+(+d?POW[i]:''))
+//                                    .reverse().join('')
+//                                    .replace(/零+$|(?<=零)零+/g, '');
