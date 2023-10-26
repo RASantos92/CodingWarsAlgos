@@ -33,18 +33,37 @@ const fieldValidator = (field) => {
             "found":0
         }
     }
-
+    const fieldCopy = [...field];
     for(let i = 0; i < field.length; i++){
         for(let j = 0; j < field[i].length; j++){
-            const row = field[i]
+            const row = fieldCopy[i]
+            //finding the start of the ship,
+            // problem not revisiting the locations again
             if(row[j] === 1){
-                const checkDiagonalPositions = (i, j) => {
-                    if(field[i+1][j-1] === 1 || field[i+1][j+1] === 1) return false;
+                let count = 1;
+                const checkDiagonalPositionsValidation = (i, j) => {
+                    if(fieldCopy[i+1][j-1] === 1 || fieldCopy[i+1][j+1] === 1) return false;
                     return true;
                 }
-
+                // finding direction
+                if(fieldCopy[i][j+1] === 1){
+                    
+                }
+                let isPostitionValid = checkDiagonalPositionsValidation(i,j);
+                var isHorazontal = 
             }
         }
     }
 
 }
+
+[
+    [0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,1,1,1,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+]
