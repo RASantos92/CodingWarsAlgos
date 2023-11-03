@@ -14,22 +14,22 @@ const fieldValidator = (field) => {
     const shipChecklist = {
         "battleship":{
             "size":4,
-            "quantity":1,
+            "maxQuantity":1,
             "found":0
         },
         "cruisers":{
             "size":3,
-            "quantity":2,
+            "maxQuantity":2,
             "found":0
         },
         "destroyers": {
             "size": 2,
-            "quantity":3,
+            "maxQuantity":3,
             "found":0
         },
         "submarines":{
             "size":1,
-            "quantity":4,
+            "maxQuantity":4,
             "found":0
         }
     }
@@ -43,11 +43,6 @@ const fieldValidator = (field) => {
             // problem not revisiting the locations again
             if(row[j] === 1){
                 let shipSize = 1;
-                const checkDiagonalPositionsValidation = (i, j) => {
-                    if(fieldCopy[i+1][j-1] === 1 || fieldCopy[i+1][j+1] === 1) return false;
-                    return true;
-                }
-                // finding direction
                 const leftDirection = fieldCopy[i][j+1];
                 const verticalDirection = fieldCopy[i+1][j];
 
@@ -91,21 +86,33 @@ const fieldValidator = (field) => {
                     }
                 }
 
-                // let isPostitionValid = checkDiagonalPositionsValidation(i,j);
-                // var isHorazontal = 
+                // now we should have the ships size. lets use it to see what ship we have and validate that dont have the max ammount yet;
+                for (const [ship, specs] of Object.entries(shipChecklist)){
+                    if(specs["size"] === shipSize && specs["maxQuantity"] > specs["found"] ){
+                        shipChecklist[ship]["found"]++;
+                        fieldCopy[i][j] = 0;
+                        break;
+                    }
+                    // this will return false if it finds that we will surpass the max ship ammount
+                    if(specs["size"] === shipSize && specs["maxQuantity"] == specs["found"] ){
+                        return false;
+                    }
+                }
             }
         }
     }
-
+    console.log(fieldCopy, shipChecklist);
 }
 
-[
+const testFeild = [
     [0,0,0,0,0,0,1,0,0,0],
     [0,0,0,0,0,0,1,0,0,0],
     [0,0,0,0,0,0,1,0,0,0],
     [0,0,0,0,0,0,1,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,1,0,0,0],
     [0,0,0,1,1,1,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
 ]
+
+console.log(fieldValidator(testFeild))
