@@ -69,7 +69,7 @@ const fieldValidator = (field) => {
 
                 // verticalDirection - This is ment to get the shipSize and to validate the ships position if found to be vertical.
                 const checkHorazontalPositionsForVerticalDirection = (i,j) => {
-                    if(fieldCopy[i][j+1] == 1 || fieldCopy[i][j-1] == 1){
+                    if(fieldCopy[i][j+1] == 1 || fieldCopy[i][j-1] == 1 || fieldCopy[i+1][j+1] == 1 || fieldCopy[i+1][j-1] == 1){
                         return false;
                     }
                     return true;
@@ -82,7 +82,7 @@ const fieldValidator = (field) => {
                             shipSize++;
                             fieldCopy[nextCheckValue][j]=0;
                             nextCheckValue++;
-                        }
+                        } else { return false }
                     }
                 }
 
@@ -106,12 +106,12 @@ const fieldValidator = (field) => {
 
 const testFeild = [
     [0,0,0,0,0,0,1,0,0,0],
-    [0,0,0,0,0,0,1,0,0,0],
-    [0,0,0,0,0,0,1,0,0,0],
-    [0,0,0,0,0,0,1,0,0,0],
-    [0,0,0,0,0,0,1,0,0,0],
-    [0,0,0,1,1,1,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,1,1,0,0,1,0,0,0],
+    [0,0,0,0,0,0,1,0,1,0],
+    [0,1,0,1,0,0,1,0,0,0],
+    [0,1,0,0,0,0,0,0,0,0],
+    [0,0,0,1,1,1,0,1,0,0],
+    [0,0,0,0,0,0,0,1,0,0],
     [0,0,0,0,0,0,0,0,0,0],
 ]
 
