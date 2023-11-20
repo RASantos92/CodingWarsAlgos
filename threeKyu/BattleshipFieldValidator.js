@@ -1,14 +1,26 @@
 // https://www.codewars.com/kata/52bb6539a4cf1b12d90005b7/train/javascript
+const checkLowerPositionsForLeftDirection = (i, j, fieldCopy) => {
+    if(fieldCopy[i+1] === undefined){
+        return true;
+    }
+    if(fieldCopy[i+1][j] == 1 || fieldCopy[i+1][j+1] == 1){
+        return false;
+    }
+    return true;
+}
 
-// const returnEmptyBoard = () => {
-//     const output = []
-//     const row = [0,0,0,0,0,0,0,0,0,0]
-//     for(let i = 0; i < 10; i++){
-//         output.push(row);
-//     }
-//     return output;
-// }
+const checkHorazontalPositionsForVerticalDirection = (i,j,fieldCopy) => {
+    if(fieldCopy[i][j+1] == 1 || fieldCopy[i][j-1] == 1 || fieldCopy[i+1][j+1] == 1 || fieldCopy[i+1][j-1] == 1){
+        return false;
+    }
+    return true;
+}
 
+const checkSubmarineValidations = (i,j, fieldCopy) => {
+    if(fieldCopy[i+1] === undefined) return true;
+    if(fieldCopy[i+1][j+1] === 1) return false;
+    return true
+}
 
 const fieldValidator = (field) => {
     const shipChecklist = {
@@ -45,23 +57,12 @@ const fieldValidator = (field) => {
                 const leftDirection = fieldCopy[i][j+1];
                 // Teranary to check if we are verticaly in bounds
                 const verticalDirection = fieldCopy[i+1] === undefined ? false : fieldCopy[i+1][j];
-
-
                 // leftDirection - this is ment to get the shipSize and to validate the ships position
-                const checkLowerPositionsForLeftDirection = (i, j) => {
-                    if(fieldCopy[i+1] === undefined){
-                        return true;
-                    }
-                    if(fieldCopy[i+1][j] == 1 || fieldCopy[i+1][j+1] == 1){
-                        return false;
-                    }
-                    return true;
-                }
                 if(leftDirection === 1){
                     let nextCheckValue = j+1;
                     while(row[nextCheckValue] == 1){
                         // Here we check if the position is valid.
-                        const isPositionValid = checkLowerPositionsForLeftDirection(i,nextCheckValue);
+                        const isPositionValid = checkLowerPositionsForLeftDirection(i,nextCheckValue,fieldCopy);
                         if(isPositionValid){
                             shipSize++;
                             // this will patch the 1 value to a zero value in the fieldCopy
@@ -70,18 +71,11 @@ const fieldValidator = (field) => {
                         }
                     }
                 }
-
-                const checkHorazontalPositionsForVerticalDirection = (i,j) => {
-                    if(fieldCopy[i][j+1] == 1 || fieldCopy[i][j-1] == 1 || fieldCopy[i+1][j+1] == 1 || fieldCopy[i+1][j-1] == 1){
-                        return false;
-                    }
-                    return true;
-                }
                 // verticalDirection - This is ment to get the shipSize and to validate the ships position if found to be vertical.
                 if(verticalDirection == 1 && shipSize == 1){
                     let nextCheckValue = i+1;
                     while(fieldCopy[nextCheckValue][j] == 1){
-                        const isPositionValid = checkHorazontalPositionsForVerticalDirection(nextCheckValue,j);
+                        const isPositionValid = checkHorazontalPositionsForVerticalDirection(nextCheckValue,j,fieldCopy);
                         if(isPositionValid){
                             shipSize++;
                             fieldCopy[nextCheckValue][j]=0;
@@ -89,21 +83,13 @@ const fieldValidator = (field) => {
                         } else { return false }
                     }
                 }
-
-                const checkSubmarineValidations = (i,j) => {
-                    if(fieldCopy[i+1] === undefined) return true;
-                    if(fieldCopy[i+1][j+1] === 1) return false;
-                    return true
-                }
                 // if the ship size is 1 we need to validate a submarine
                 if(shipSize == 1) {
-                    const submarineValid = checkSubmarineValidations(i,j)
+                    const submarineValid = checkSubmarineValidations(i,j,fieldCopy)
                     if(!submarineValid) {
-                        console.log("here", i, j)
                         return false
                     }
                 }
-
                 // now we should have the ships size. lets use it to see what ship we have and validate that dont have the max ammount yet;
                 for (const [ship, specs] of Object.entries(shipChecklist)){
                     if(specs["size"] === shipSize && specs["maxQuantity"] > specs["found"] ){
@@ -119,7 +105,7 @@ const fieldValidator = (field) => {
             }
         }
     }
-    console.log(fieldCopy, shipChecklist);
+    return shipChecklist;
 }
 
 const testFeild = [
