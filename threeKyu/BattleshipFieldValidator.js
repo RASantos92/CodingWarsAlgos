@@ -39,16 +39,19 @@ const fieldValidator = (field) => {
     for(let i = 0; i < field.length; i++){
         for(let j = 0; j < field[i].length; j++){
             const row = fieldCopy[i]
-            //finding the start of the ship,
-            // problem not revisiting the locations again
+            // finding the start of the ship,
             if(row[j] === 1){
                 let shipSize = 1;
                 const leftDirection = fieldCopy[i][j+1];
-                const verticalDirection = fieldCopy[i+1][j];
+                // Teranary to check if we are verticaly in bounds
+                const verticalDirection = fieldCopy[i+1] === undefined ? false : fieldCopy[i+1][j];
 
 
                 // leftDirection - this is ment to get the shipSize and to validate the ships position
                 const checkLowerPositionsForLeftDirection = (i, j) => {
+                    if(fieldCopy[i+1] === undefined){
+                        return true;
+                    }
                     if(fieldCopy[i+1][j] == 1 || fieldCopy[i+1][j+1] == 1){
                         return false;
                     }
@@ -57,6 +60,7 @@ const fieldValidator = (field) => {
                 if(leftDirection === 1){
                     let nextCheckValue = j+1;
                     while(row[nextCheckValue] == 1){
+                        // Here we check if the position is valid.
                         const isPositionValid = checkLowerPositionsForLeftDirection(i,nextCheckValue);
                         if(isPositionValid){
                             shipSize++;
@@ -67,13 +71,13 @@ const fieldValidator = (field) => {
                     }
                 }
 
-                // verticalDirection - This is ment to get the shipSize and to validate the ships position if found to be vertical.
                 const checkHorazontalPositionsForVerticalDirection = (i,j) => {
                     if(fieldCopy[i][j+1] == 1 || fieldCopy[i][j-1] == 1 || fieldCopy[i+1][j+1] == 1 || fieldCopy[i+1][j-1] == 1){
                         return false;
                     }
                     return true;
                 }
+                // verticalDirection - This is ment to get the shipSize and to validate the ships position if found to be vertical.
                 if(verticalDirection == 1 && shipSize == 1){
                     let nextCheckValue = i+1;
                     while(fieldCopy[nextCheckValue][j] == 1){
@@ -83,6 +87,20 @@ const fieldValidator = (field) => {
                             fieldCopy[nextCheckValue][j]=0;
                             nextCheckValue++;
                         } else { return false }
+                    }
+                }
+
+                const checkSubmarineValidations = (i,j) => {
+                    if(fieldCopy[i+1] === undefined) return true;
+                    if(fieldCopy[i+1][j+1] === 1) return false;
+                    return true
+                }
+                // if the ship size is 1 we need to validate a submarine
+                if(shipSize == 1) {
+                    const submarineValid = checkSubmarineValidations(i,j)
+                    if(!submarineValid) {
+                        console.log("here", i, j)
+                        return false
                     }
                 }
 
@@ -105,14 +123,14 @@ const fieldValidator = (field) => {
 }
 
 const testFeild = [
-    [0,0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,0,0,1,0,0,1],
     [0,0,1,1,0,0,1,0,0,0],
     [0,0,0,0,0,0,1,0,1,0],
     [0,1,0,1,0,0,1,0,0,0],
-    [0,1,0,0,0,0,0,0,0,0],
-    [0,0,0,1,1,1,0,1,0,0],
-    [0,0,0,0,0,0,0,1,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
+    [0,1,0,0,0,0,0,0,0,1],
+    [0,0,0,0,0,0,0,1,0,1],
+    [0,0,0,0,0,0,0,1,0,1],
+    [1,0,0,1,1,1,0,0,0,0],
 ]
 
 console.log(fieldValidator(testFeild))
